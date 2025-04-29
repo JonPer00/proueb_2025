@@ -1,0 +1,15 @@
+[project]
+name = "proueb_2025"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "JonPer00", email = "pj1959@mci4me.at"},
+]
+dependencies = ["numpy>=2.2.5", "matplotlib>=3.10.1"]
+requires-python = "==3.13.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
