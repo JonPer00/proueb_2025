@@ -3,7 +3,7 @@
 ## Ziel des Projektes
 Hier wird eine Leistungskurve aus einer __CSV__ Datei geplotet. 
 
-Hier werden die ersten schritte beschrieben:
+Hier werden die ersten Schritte beschrieben:
 
 ## Umgang mit PDM
 
@@ -15,8 +15,18 @@ Hier werden die ersten schritte beschrieben:
 
 ## Nutzung des Projektes 
 
-In [`activity.csv`](activity.csv) liegen die Dateien. 
 
-### Beispiele: 
+Dann nutzt man [`diesen Link`](https://github.com/JonPer00/proueb_2025) um das Repository in Visual Sudio Code zu Klonen. 
 
-![](https://jhumci.github.io/2024_SoSe_Programmieruebung/images/power_curve.png)
+Lediglich `pdm install` reicht aus, um alle anderen Datei mitzuinstallieren. 
+
+Um die Kurve aus der __CSV__ Datei zu erzeugen, muss nun unter src die Datei power_curve.py ausgeführt werden. 
+
+Funfact, die Grau markierte Fläche unter der Kurve, stellt die verbrauchte Energie dar. 
+
+Nun kann man das Projekt einwandfrei nutzen. __Viel Spaß!__
+:) 
+
+### Die dazugehörig Grafik: 
+
+![](https://github.com/JonPer00/proueb_2025/blob/main/figures/leistungskurve1.png?raw=true)
