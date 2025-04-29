@@ -1,12 +1,5 @@
 import numpy as np
-def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-    return arr
-
+from sort import bubble_sort
 import matplotlib.pyplot as plt
 
 def load_data(file_path):
@@ -32,7 +25,9 @@ def load_data(file_path):
 if __name__ == "__main__":
     data = load_data('activity.csv')
     power_W = data['PowerOriginal']
+    print("Unsorted array:")
     print(power_W)
     sorted_power_W = bubble_sort(power_W)
+    print("Sorted array:")
     print(sorted_power_W[::-1])
   
