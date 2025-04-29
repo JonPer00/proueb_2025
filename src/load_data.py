@@ -8,7 +8,7 @@ def load_data(file_path):
     #file_path = 'activity.csv'
 
     # Use numpy.genfromtxt to read the CSV data from the file into a NumPy array
-    data_array = np.genfromtxt(file_path, delimiter=',', dtype=None, names=True)
+    data_array = np.genfromtxt("data/activity.csv", delimiter=',', dtype=None, names=True)
 
     # Transpose the array to have each column in a separate NumPy array
     column_names = data_array.dtype.names
