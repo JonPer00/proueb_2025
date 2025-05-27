@@ -30,3 +30,37 @@ Nun kann man das Projekt einwandfrei nutzen. __Viel Spaß!__
 ### Die dazugehörig Grafik: 
 
 ![](https://github.com/JonPer00/proueb_2025/blob/main/figures/leistungskurve1.png?raw=true)
+
+# EKG Analyze APP
+
+
+## Funktionsumfang
+
+- Die App ermöglicht die Analyse von EKG Daten.
+- Dabei werden folgende USe Case unterstützt:
+
+![](data/pictures/uml_usecase.svg)
+
+
+### Funktionale Anforderungen:
+
+- [ ] Als Nutzer:in möchte ich eine Versuchsperson auswählen und die relevanten Daten angezeigt bekommen
+- [ ] Als Nutzer:in möchte ich mir das Bild einer Versuchsperson anzeigen lassen, um mich zu vergewissern, dass ich die richtige Person anzeige (Termin 2)
+- [ ] Als Nutzer:in möchte ich die zu einer Versuchsperson gehörenden EKG Datensätze auswählen können (sofern es mehrere gibt)
+- [ ] Als Nutzer:in möchte ich die EKG-Daten einer Versuchsperson als Grafik anzeigen lassen (Termin 3)
+- [ ] Als Nutzer:in möchte ich mir den Durchschnittspuls einer Versuchsperson als Zahl anzeigen lassen (Termin 4)
+
+## Implementierung (Pflichtenheft - Wie?)
+
+### Ablaufdiagramm 
+Die User Journey wir in einem Ablaufdiagramm dargestellt:
+
+![](data/pictures/ACD.jpg)
+
+
+## Anwendung der App
+
+1. Sicherstellen, dass virtuelle Umgebung aktiviert ist. `venv/Scripts/activate`
+2. Abhängigkeiten instellieren `streamlit run main.py`
+
+
