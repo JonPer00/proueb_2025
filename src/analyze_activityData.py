@@ -6,7 +6,7 @@ dataframe
 dataframe.columns
 
 # %%
-dataframe["HeartRate"].min()
+print(dataframe["HeartRate"].min())
 dataframe["HeartRate"].max()
 dataframe["HeartRate"].mean()
 df_statistics = dataframe[["HeartRate", "PowerOriginal"]].describe()
@@ -15,7 +15,7 @@ df_statistics = dataframe[["HeartRate", "PowerOriginal"]].describe()
 print(dataframe["PowerOriginal"].mean())
 dataframe["PowerOriginal"].max()
 print(dataframe["Duration"].sum)
-
+print(darafr)
 
 
 # %%
@@ -56,6 +56,7 @@ dataframe["Zone"].value_counts()
 
 
 # %%
+dataframe
 
 dataframe.groupby("Zone").mean()
 # %%

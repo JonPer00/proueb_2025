@@ -5,50 +5,54 @@ import streamlit as st
 # Daten einlesen
 dataframe = pd.read_csv('../data/activity.csv')
 
-# Maximale Herzfrequenz per App-Eingabe
-hr_max = st.number_input("Maximale Herzfrequenz (bpm)", min_value=100, max_value=250, value=int(dataframe["HeartRate"].max()))
+st.title("Analyse der Aktivitätsdaten")
+st.header("Bitte die Maximale Herzfrequenz eingeben")
 
-# Zonen berechnen (verschieben sich mit hr_max)
-untergrenzen_zonen = {}
-zone = 1
-for faktor in [0.5, 0.6, 0.7, 0.8, 0.9]:
-    untergrenzen_zonen["Zone" + str(zone)] = float(hr_max * faktor)
-    zone = zone + 1
+# Maximale Herzfrequenz per App-Eingabe (nur für die Achsenskalierung)
+hr_max = st.number_input("Maximale Herzfrequenz (bpm)", min_value=50, max_value=250, value=int(dataframe["HeartRate"].max()))
 
-# Einteilung der Zonen
-list_zone = []
-for current_hr in dataframe["HeartRate"]:
-    if current_hr >= untergrenzen_zonen["Zone5"]:
-        list_zone.append("Zone5")
-    elif current_hr >= untergrenzen_zonen["Zone4"]:
-        list_zone.append("Zone4")
-    elif current_hr >= untergrenzen_zonen["Zone3"]:
-        list_zone.append("Zone3")
-    elif current_hr >= untergrenzen_zonen["Zone2"]:
-        list_zone.append("Zone2")
-    elif current_hr >= untergrenzen_zonen["Zone1"]:
-        list_zone.append("Zone1")
-    else:
-        list_zone.append("Zone0")
-
-dataframe["Zone"] = list_zone
-
-# Zeit pro Zone berechnen (Annahme: 1 Zeile = 1 Sekunde)
-zone_counts = dataframe["Zone"].value_counts().sort_index()
-zone_minutes = (zone_counts / 60).round(2)
-zone_percent = (zone_counts / len(dataframe) * 100).round(1)
-
-# Ausgabe: Zeit pro Zone
-st.write("### Verbrachte Zeit in den Zonen (in Minuten):")
-st.write(zone_minutes)
-
-st.write("### Prozentuale Verteilung der Zeit in den Zonen:")
-st.write(zone_percent)
+# Berechnen der Gesamtdauer in Minuten und Sekunden
+total_seconds = int(dataframe["Duration"].sum())
+minutes = total_seconds // 60
+seconds = total_seconds % 60
 
 # Ausgabe von Mittelwert, Maximalwert und Gesamtdauer
-st.write("Mittelwert PowerOriginal:", dataframe["PowerOriginal"].mean())
-st.write("Maximalwert PowerOriginal:", dataframe["PowerOriginal"].max())
-st.write("Gesamtdauer (Summe Duration):", dataframe["Duration"].sum())
+st.table({
+    "Ø Leistung (Watt)": [f"{dataframe['PowerOriginal'].mean():.1f}"],
+    "Max. Leistung (Watt)": [f"{dataframe['PowerOriginal'].max():.0f}"],
+    "Gesamtdauer (m:s)": [f"{minutes}:{seconds:02d}"],
+})
+
+
+# Feste Zonen-Grenzen 
+zonengrenzen = [90, 110, 140, 160, 180, 210]  
+
+# Farben für die Herzfrequenz-Zonen
+farben = [
+    "rgba(250,240,255,0.2)",  # Zone 1
+    "rgba(200,220,255,0.4)",  # Zone 2
+    "rgba(140,200,255,0.6)",  # Zone 3
+    "rgba(80,180,255,0.8)",   # Zone 4
+    "rgba(20,160,255,1)",   # Zone 5
+]
+
+# Funktion zur Zonenzuordnung
+def get_zone(hr):
+    if hr < zonengrenzen[1]:
+        return "Zone1"
+    elif hr < zonengrenzen[2]:
+        return "Zone2"
+    elif hr < zonengrenzen[3]:
+        return "Zone3"
+    elif hr < zonengrenzen[4]:
+        return "Zone4"
+    elif hr < zonengrenzen[5]:
+        return "Zone5"
+    else:
+        return "Zone5+"
+
+dataframe["Zone"] = dataframe["HeartRate"].apply(get_zone)
+
 
 # Plotting mit Plotly
 window_size = 30
@@ -56,18 +60,7 @@ zeit_achsen = dataframe.index / 60
 
 fig = go.Figure()
 
-# Farben für die Herzfrequenz-Zonen
-farben = [
-    "rgba(250,240,255,0.3)",  # Zone 1
-    "rgba(200,220,255,0.3)",  # Zone 2
-    "rgba(140,200,255,0.3)",  # Zone 3
-    "rgba(80,180,255,0.3)",   # Zone 4
-    "rgba(20,160,255,0.3)",   # Zone 5
-]
-
-# Zonen als farbige Rechtecke im Hintergrund (rechte Y-Achse)
-zonengrenzen = [0] + [untergrenzen_zonen[f"Zone{i}"] for i in range(1, 5)] + [hr_max]
-
+# Rechtecke für die festen Zonen zeichnen
 for i in range(1, 6):
     fig.add_shape(
         type="rect",
@@ -121,7 +114,7 @@ fig.update_layout(
         title="Herzfrequenz (bpm)",
         overlaying="y",
         side="right",
-        range=[0, hr_max]
+        range=[0, hr_max]  # Nur die Achse skaliert sich, die Zonen bleiben fix!
     ),
     legend=dict(
         orientation="h",
@@ -136,3 +129,24 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
+
+# Zeit pro Zone berechnen 1 Zeile = 1 Sekunde
+zone_counts = dataframe["Zone"].value_counts().sort_index()
+zone_minutes = (zone_counts / 60).apply(lambda x: f"{x:.2f}")  # Minuten als String mit 2 Nachkommastellen
+zone_percent = (zone_counts / len(dataframe) * 100).apply(lambda x: f"{x:.1f}")  # Prozent als String mit 1 Nachkommastelle
+
+st.write("### Verbrachte Zeit in den Zonen (in Minuten):")
+st.table(zone_minutes.to_frame(name="Minuten"))
+
+st.write("### Prozentuale Verteilung der Zeit in den Zonen:")
+st.table(zone_percent.to_frame(name="Zeit (%)"))
+
+
+# Prozentualer Anteil der Leistung pro Zone
+zone_power_percent = (dataframe.groupby("Zone")["PowerOriginal"].sum() / dataframe["PowerOriginal"].sum() * 100)
+zone_power_percent = zone_power_percent.apply(lambda x: f"{x:.1f}")  # Format als String mit 1 Nachkommastelle
+st.write("### Prozentuale Verteilung der Leistung in den Zonen:")
+st.table(zone_power_percent.to_frame(name="Leistung (%)"))
+
+
