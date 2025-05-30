@@ -19,12 +19,12 @@ Lediglich `pdm install` reicht aus, um alle anderen Datei mitzuinstallieren.
 Nun muss man nurnoch unter Extentions "Streamlit Runner" installieren und dann mittel `pdm add streamlit` die dazugehörigen Dateien installieren. 
 
 Um die Daten aus einer __CSV__ Datei analysieren zu können, muss nun die Datei main_ausgabe.py mittels Streamlit ausgeführt werden. 
-Das kann man ganz einfach, indem mann einen rechtklick auf "main_ausgabe.py" macht, und auf "Run with Streamlit" klickt. 
+Das kann man ganz einfach, indem mann einen Rechtsklick auf "main_ausgabe.py" macht, und auf "Run with Streamlit" klickt. 
 
 Nun startet die Ausgabe im Browser unter "localhost". 
 Bei Veränderung im Code ist ledigliches Speicher und Reloaden der Browserseite nötig, um die Veränderung sehen zu können. 
 
-ps: Die Grafik inst Interaktiv. 
+ps: Die Grafik ist Interaktiv. 
 
 Hier noch eine kleiner prelook auf die Grafik: 
  ![](https://github.com/JonPer00/proueb_2025/blob/main/figures/Plotinter.png?raw=true)
